@@ -1,26 +1,16 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { createCanvas } from 'canvas'
+import renderSticker from '../../lib/sticker'
 
-
-type Data = {
+type StickerRequestData = {
   name: string
 }
 
-export default async function handler(
+export default function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse<StickerRequestData>
 ) {
-  const width = 400
-  const height = 400
-
-  const canvas = createCanvas(width, height)
-
-  const context = canvas.getContext('2d')
-  context.fillStyle = '#000'
-  context.fillRect(0, 0, width, height)
-
-  const canvasDataUrl =  canvas.toDataURL()
-
-  res.status(200).json({ name: canvasDataUrl })
+  res.status(200).json({ name: renderSticker() })
 }
+
+
