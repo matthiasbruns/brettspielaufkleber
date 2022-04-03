@@ -18,17 +18,8 @@ type StickerData = {
     playerData: PlayerStickerData;
 }
 
-export default function renderSticker(data: StickerData): string {
-    const width = 400
-    const height = 400
-
-    const canvas = createCanvas(width, height)
-
-    const context = canvas.getContext('2d')
-
-    drawBackgroundCircle(context, width, height)
-
-    drawPlayerSegments(context, width, height, {
+export default function renderSticker(data: StickerData = {
+    game: "Test Game", playerData: {
         playersRangeCommunity: {
             minPlayers: 2,
             maxPlayers: 3
@@ -37,8 +28,16 @@ export default function renderSticker(data: StickerData): string {
             minPlayers: 1,
             maxPlayers: 4,
         }
-    })
+    }
+}): string {
+    const width = 400
+    const height = 400
 
+    const canvas = createCanvas(width, height)
+    const context = canvas.getContext('2d')
+
+    drawBackgroundCircle(context, width, height)
+    drawPlayerSegments(context, width, height, data.playerData)
     drawDifficulty(context, width, height, 4.5)
 
     return canvas.toDataURL()
@@ -53,7 +52,8 @@ function drawBackgroundCircle(context: CanvasRenderingContext2D, width: number, 
 
 function drawDifficulty(context: CanvasRenderingContext2D, width: number, height: number, difficulty: number) {
     const a = 2 * Math.PI / 6
-    const r = 50
+    const minSize = Math.min(height, width)
+    const r = minSize * 0.135
     const x = width / 2;
     const y = height / 2
 
@@ -69,19 +69,22 @@ function drawDifficulty(context: CanvasRenderingContext2D, width: number, height
     context.stroke()
 
     const textString = `${difficulty.toFixed(1)}`
-    const textSize = 40
+    const textSize = minSize * 0.1
 
-    context.font = `${textSize}px serif`
+    context.font = `${textSize}px Arial`
     context.textBaseline = 'middle'
     context.textAlign = 'center'
     context.fillStyle = "#fff"
 
-    context.fillText(textString, x, y + textSize * 0.1)
+    context.fillText(textString, x, y)
 }
 
 function drawPlayerSegments(context: CanvasRenderingContext2D, width: number, height: number, playerData: PlayerStickerData) {
     const cx = width / 2
     const cy = height / 2
+    const minSize = Math.min(height, width)
+    const textSize = minSize * 0.05
+    const radius = (minSize / 2) * 0.9
 
     const stepOffset = -(0.5 * Math.PI)
 
@@ -105,10 +108,18 @@ function drawPlayerSegments(context: CanvasRenderingContext2D, width: number, he
         context.strokeStyle = "#ffffff"
         context.beginPath()
         context.moveTo(cx, cy)
-        context.arc(cx, cy, height / 3, stepStart + stepOffset, stepEnd + stepOffset)
+        context.arc(cx, cy, radius, stepStart + stepOffset, stepEnd + stepOffset)
         context.lineTo(cx, cy)
         context.closePath()
         context.fill()
         context.stroke()
+
+        // Draw text
+        context.fillStyle = 'white'
+        context.font = `${textSize}px bold Arial`
+        context.textAlign = 'center'
+        context.textBaseline = 'middle'
+        var mid = stepOffset + (stepStart + stepEnd) / 2
+        context.fillText(`${currentPlayerCount}`, cx + Math.cos(mid) * (radius * 0.75), cy + Math.sin(mid) * (radius * 0.75));
     }
 }
