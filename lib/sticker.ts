@@ -1,32 +1,31 @@
 import { createCanvas } from 'canvas'
-import { on } from 'events';
 
 type PlayersRange = {
-    minPlayers: number;
-    maxPlayers: number;
+    minPlayers: number
+    maxPlayers: number
 }
 
 type PlayerStickerData = {
-    playersRangeOfficial: PlayersRange;
-    playersRangeCommunity: PlayersRange;
-    playersRangePreffered: PlayersRange;
+    playersRangeOfficial: PlayersRange
+    playersRangeCommunity: PlayersRange
+    playersRangePreffered: PlayersRange
 }
 
 type StickerData = {
-    game: string;
-    difficulty: number;
-    playerData: PlayerStickerData;
+    game: string
+    difficulty: number
+    playerData: PlayerStickerData
 }
 
 type ColorTheme = {
-    backgroundColor: string;
-    strokeColor: string;
-    textColor: string;
-    difficultyColor: string;
-    defaultPlayersColor: string;
-    officialPlayersColor: string;
-    communityPlayersColor: string;
-    preferredPlayersColor: string;
+    backgroundColor: string
+    strokeColor: string
+    textColor: string
+    difficultyColor: string
+    defaultPlayersColor: string
+    officialPlayersColor: string
+    communityPlayersColor: string
+    preferredPlayersColor: string
 }
 
 export default function renderSticker(data: StickerData = {
