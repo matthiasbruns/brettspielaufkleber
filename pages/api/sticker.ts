@@ -3,14 +3,14 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import renderSticker from '../../lib/sticker'
 
 type StickerRequestData = {
-  name: string
+  imageData: string
 }
 
 export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<StickerRequestData>
 ) {
-  res.status(200).json({ name: renderSticker() })
+  res.status(200).json({ imageData: renderSticker() })
 }
 
 

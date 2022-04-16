@@ -5,7 +5,7 @@ import styles from '../styles/Home.module.css'
 
 import useSWR, {  Fetcher } from 'swr'
 
-const fetcher: Fetcher<string, string> = (url: string) => fetch(url).then((res) => res.json()).then((json) => json.name)
+const fetcher: Fetcher<string, string> = (url: string) => fetch(url).then((res) => res.json()).then((json) => json.imageData)
 
 
 const Home: NextPage = () => {
